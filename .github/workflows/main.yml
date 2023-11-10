@@ -28,6 +28,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
+          aws-access-key-id: AKIAUPXAOCBFTP5DHB5B
           aws-region: us-east-1
       # don't use the following subnets as p3.8xlarge is not supported there:
       # - subnet-06576a4b # us-east-1d
