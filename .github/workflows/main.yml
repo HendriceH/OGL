@@ -59,9 +59,8 @@ jobs:
     #   cancel-in-progress: true
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
     steps:
-      - name: NVIDIA-SMI
-        run: nvidia-smi
-
+      - name: Get_script
+        run: aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/postinstall .
       - name: Checkout
         uses: actions/checkout@v2
 
