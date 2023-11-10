@@ -33,7 +33,7 @@ jobs:
           aws-region: us-east-1
       - name: Try to start EC2 runner (a)
         id: try-us-east-1f
-        uses: machulav/ec2-github-runner@v2
+        uses: machulav/ec2-github-runner@v2.3.3
         continue-on-error: true
         with:
           mode: start
@@ -52,9 +52,9 @@ jobs:
       - name: See if any of 3 sub-regions had the resource
         id: start-ec2-runner
         run: |
-          if [ "${{ steps.try-us-east-1a.outcome }}" = "success" ]; then
+          if [ "${{ steps.try-us-east-1f.outcome }}" = "success" ]; then
             echo "::set-output name=label::${{ steps.try-us-east-1a.outputs.label }}"
-            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1a.outputs.ec2-instance-id }}"
+            echo "::set-output name=ec2-instance-id::${{ steps.try-us-east-1f.outputs.ec2-instance-id }}"
           fi
 
   do-the-job:
@@ -87,7 +87,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Stop EC2 runner
-        uses: machulav/ec2-github-runner@v2
+        uses: machulav/ec2-github-runner@v2.3.3
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
