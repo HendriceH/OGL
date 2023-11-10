@@ -1,4 +1,5 @@
 name: Run all tests
+run-name: Run all tests
 on:
   # enable to manually trigger the tests
   workflow_dispatch:
