@@ -47,8 +47,6 @@ jobs:
               {"Key": "Name", "Value": "ec2-github-runner"},
               {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
             ]
-          pre-runner-script: |
-                 sudo yum install -y ninja-build
       - name: See if any of 3 sub-regions had the resource
         id: start-ec2-runner
         run: |
