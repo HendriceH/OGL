@@ -26,7 +26,7 @@ jobs:
           ec2-image-id: ami-05c13eab67c5d8861
           ec2-instance-type: t3.nano
           subnet-id: subnet-b5d2adbb
-          security-group-id: sg-0ac393ead1f5ab048
+          security-group-id: sg-559f8967
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
