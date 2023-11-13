@@ -30,6 +30,10 @@ jobs:
           iam-role-name: Role4Github
           subnet-id: subnet-b5d2adbb
           security-group-id: sg-559f8967
+          pre-runner-script: |
+                 sudo yum update -y && \ 
+                 sudo yum install docker git libicu -y
+                 sudo systemctl enable docker
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
