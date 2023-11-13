@@ -27,6 +27,7 @@ jobs:
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           ec2-image-id: ami-05c13eab67c5d8861
           ec2-instance-type: t3.nano
+          iam-role-name: Github-OIDC-Role-29bocUD8VBZr
           subnet-id: subnet-b5d2adbb
           security-group-id: sg-559f8967
   do-the-job:
