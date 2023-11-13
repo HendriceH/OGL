@@ -33,7 +33,7 @@ jobs:
           aws-region: us-east-1
       - name: Try to start EC2 runner (a)
         id: try-us-east-1f
-        uses: machulav/ec2-github-runner@v2.3.3
+        uses: rahrahlife/ec2-github-runner@v3
         continue-on-error: true
         with:
           mode: start
@@ -79,7 +79,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Stop EC2 runner
-        uses: machulav/ec2-github-runner@v2.3.3
+        uses: rahrahlife/ec2-github-runner@v3
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
