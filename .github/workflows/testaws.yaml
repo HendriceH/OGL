@@ -26,21 +26,36 @@ jobs:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           ec2-image-id: ami-0e8a34246278c21e4
-          ec2-instance-type: t3.nano
+          ec2-instance-type: g4dn.2xlarge
           iam-role-name: Role4Github
           subnet-id: subnet-b5d2adbb
           security-group-id: sg-559f8967
           pre-runner-script: |
                  sudo yum update -y && \ 
-                 sudo yum install docker git libicu -y
+                 sudo yum install docker git libicu ninja-build -y
                  sudo systemctl enable docker
+                 aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/postinstall_github .
+                 chmod +x postinstall_github
+                 sudo ./postinstall_github
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
     steps:
-      - name: Hello World
-        run: echo 'Hello World!'
+      - name: Checkout OGL
+        uses: actions/checkout@v4
+      - name: Source and configure
+        run: |
+          cd OGL
+          module load OpenFOAM-v2212
+          module load cmake-3.22.6
+      - name: Configure
+        run: |
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+      - name: Build
+        run: cmake --build . --config Release
+      - name: Install
+        run: cmake --install .
   stop-runner:
     name: Stop self-hosted EC2 runner
     needs:
@@ -50,7 +65,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    if: false #${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
