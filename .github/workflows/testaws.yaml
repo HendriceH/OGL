@@ -34,9 +34,11 @@ jobs:
                  sudo yum update -y && \ 
                  sudo yum install docker git libicu ninja-build -y
                  sudo systemctl enable docker
+                 sudo mkfs -t xfs /dev/sda1
+                 sudo mkdir -p /share
+                 sudo mount /dev/xvdf /share
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/postinstall_github .
                  chmod +x postinstall_github
-                 sudo mkdir -p /share
                  sudo ./postinstall_github
   do-the-job:
     name: Do the job on the runner
