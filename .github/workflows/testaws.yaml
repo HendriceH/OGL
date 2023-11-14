@@ -21,7 +21,7 @@ jobs:
           aws-region: us-east-1
       - name: Start EC2 runner
         id: start-ec2-runner
-        uses: HendriceH/ec2-github-runner@v1.5
+        uses: HendriceH/ec2-github-runner@v1.6
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
@@ -56,8 +56,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Sourcing
         run: |
-          source /etc/profile.d/modules.sh
-          source /etc/profile.d/zzzz-lmod-stdenv.sh
           module load openmpi
           module load OpenFOAM/v2212
           module load cmake/3.22.6
@@ -86,7 +84,7 @@ jobs:
           role-to-assume: arn:aws:iam::308634587211:role/Github-OIDC-Role-29bocUD8VBZr
           aws-region: us-east-1
       - name: Stop EC2 runner
-        uses: HendriceH/ec2-github-runner@v1.5
+        uses: HendriceH/ec2-github-runner@v1.6
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
