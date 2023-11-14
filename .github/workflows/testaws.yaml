@@ -54,6 +54,7 @@ jobs:
       - name: Source and configure
         run: |
           cd /actions-runner/_work/OGL/OGL
+          module load openmpi
           module load OpenFOAM/v2212
           module load cmake/3.22.6
       - name: Configure
@@ -72,7 +73,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    if: false #${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
