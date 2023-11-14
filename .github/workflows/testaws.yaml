@@ -31,6 +31,7 @@ jobs:
           subnet-id: subnet-b5d2adbb
           security-group-id: sg-559f8967
           pre-runner-script: |
+                 #!/bin/bash
                  sudo yum update -y && \ 
                  sudo yum install docker git libicu ninja-build openmpi-devel -y
                  sudo amazon-linux-extras install epel -y 
@@ -44,6 +45,17 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
+                 # Only display echos from profile.d scripts if we are no login shell
+                  # and interactive - otherwise just process them to set envvars
+                  for i in /etc/profile.d/*.sh; do
+                      if [ -r "$i" ]; then
+                          if [ "$PS1" ]; then
+                              . "$i"
+                          else
+                              . "$i" >/dev/null
+                          fi
+                      fi
+                  done
                  ml av > ~/mlav.log
                  module avail > ~/modulavail.log
                  module load openmpi > ~/loadompi.log
