@@ -32,7 +32,9 @@ jobs:
           security-group-id: sg-559f8967
           pre-runner-script: |
                  sudo yum update -y && \ 
-                 sudo yum install docker git libicu ninja-build -y
+                 sudo yum install docker git libicu ninja-build openmpi-devel -y
+                 sudo amazon-linux-extras install epel -y 
+                 sudo yum install Lmod -y
                  sudo systemctl enable docker
                  sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
                  sudo mkfs -t xfs /dev/sda1
