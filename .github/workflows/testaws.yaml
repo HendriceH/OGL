@@ -44,7 +44,7 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
-                 exec bash >> ~/install.log
+                 bash
                  ml av >> ~/install.log
                  env >> /actions-runner/.env 
   do-the-job:
