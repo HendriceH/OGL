@@ -49,7 +49,7 @@ jobs:
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
     steps:
       - name: Checkout OGL
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
       - name: Source and configure
         run: |
           cd OGL
