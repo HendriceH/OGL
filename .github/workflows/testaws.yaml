@@ -45,18 +45,8 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
-                 # Only display echos from profile.d scripts if we are no login shell
-                  # and interactive - otherwise just process them to set envvars
-                  for i in /etc/profile.d/*.sh; do
-                      if [ -r "$i" ]; then
-                          if [ "$PS1" ]; then
-                              . "$i"
-                          else
-                              . "$i" >/dev/null
-                          fi
-                      fi
-                  done
-                 ml av > ~/mlav.log
+                 source /share/software/OpenFOAM/OpenFOAM-v2212/etc/bashrc
+                 env > testenv
                  module avail > ~/modulavail.log
                  module load openmpi > ~/loadompi.log
                  env >> /actions-runner/.env 
