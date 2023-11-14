@@ -42,7 +42,8 @@ jobs:
                  sudo mount /dev/sda1 /share
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/postinstall_github .
                  chmod +x postinstall_github
-                 sudo ./postinstall_github > install.log
+                 sudo ./postinstall_github > ~/install.log
+                 aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
@@ -52,9 +53,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Source and configure
         run: |
-          cd OGL
-          module load OpenFOAM-v2212
-          module load cmake-3.22.6
+          cd /actions-runner/_work/OGL/OGL
+          module load OpenFOAM/v2212
+          module load cmake/3.22.6
       - name: Configure
         run: |
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
