@@ -69,18 +69,20 @@ jobs:
     steps:
       - name: Checkout OGL
         uses: actions/checkout@v2
-      - name: Check env
-        run: env
-      - name: Source, config and build
+      - name: Config 1
+        if: always()
+        shell: bash
+        run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+      - name: Config 2
         shell: bash
         run: |
-          env
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
-          cmake --build . --config Release
-          cmake --install .
-      - name: Check Environment
-        run: env
+      - name: Build
+        shell: bash
+        run: cmake --build . --config Release
+      - name: Install
+        shell: bash
+        run: cmake --install .
   stop-runner:
     name: Stop self-hosted EC2 runner
     needs:
