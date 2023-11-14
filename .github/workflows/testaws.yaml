@@ -51,22 +51,18 @@ jobs:
     steps:
       - name: Checkout OGL
         uses: actions/checkout@v2
-      - name: Sourcing
+      - name: Source, config and build
         shell: bash
         run: |
           export PATH=/share/software/OpenFOAM/ThirdParty-v2212/platforms/linux64Gcc10/ADIOS2-2.8.3-sys-openmpi/bin:/root/OpenFOAM/root-v2212/platforms/linux64Gcc10DPInt32Opt/bin:/share/software/OpenFOAM/OpenFOAM-v2212/site/2212/platforms/linux64Gcc10DPInt32Opt/bin:/share/software/OpenFOAM/OpenFOAM-v2212/platforms/linux64Gcc10DPInt32Opt/bin:/share/software/OpenFOAM/OpenFOAM-v2212/bin:/share/software/OpenFOAM/OpenFOAM-v2212/wmake:/share/software/cmake/3.22.6/bin:/lib64/openmpi/bin:$PATH
           cd /actions-runner/_work/OGL/OGL
           env
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+          cmake --build . --config Release
+          cmake --install .
       - name: Check Environment
         run: env
-      - name: Configure
-        run: |
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
-      - name: Build
-        run: cmake --build . --config Release
-      - name: Install
-        run: cmake --install .
   stop-runner:
     name: Stop self-hosted EC2 runner
     needs:
