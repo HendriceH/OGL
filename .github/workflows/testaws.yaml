@@ -45,6 +45,9 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
+                 export COMPILER_TYPE="gnu10"
+                 export CC="gcc10-gcc"
+                 export CXX="gcc10-c++"
                  export PATH="/share/software/cmake/3.22.6/bin:$PATH"
                  export PATH="/lib64/openmpi/bin:$PATH"
                  export CPATH="/lib64/openmpi/include:$CPATH"
@@ -70,10 +73,10 @@ jobs:
       - name: Checkout OGL
         uses: actions/checkout@v2
       - name: Config 1
-        if: always()
         shell: bash
         run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Config 2
+        if: always()
         shell: bash
         run: |
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
