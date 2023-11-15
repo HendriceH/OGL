@@ -25,7 +25,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-068fc371c857ce6dc # ami-0e8a34246278c21e4
+          ec2-image-id: ami-03af087024bfdbbee # ami-0e8a34246278c21e4
           ec2-instance-type: g4dn.4xlarge
           iam-role-name: Role4Github
           subnet-id: subnet-b5d2adbb
@@ -49,7 +49,7 @@ jobs:
                  export CC="gcc10-gcc"
                  export CXX="gcc10-c++"
                  export PATH="/opt/nvidia/cuda/bin:/share/software/cmake/3.22.6/bin:/lib64/openmpi/bin:$PATH"
-                 ln -s /usr/share/cmake3 /usr/share/cmake-3.22
+                 ln -s /share/software/cmake/3.22.6/share/cmake-3.22 /usr/share/cmake-3.22
                  export CPATH="/lib64/openmpi/include:$CPATH"
                  export MPI_DIR="/lib64/openmpi"
                  export MPI_ROOT="/lib64/openmpi"
@@ -74,19 +74,27 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: Testrefact
+      - name: Test env
+        shell: bash -o pipefail -i {0}
+        run: |
+          env
+          module load openmpi
+          module load OpenFOAM
+          module load cmake
+          env
       - name: Config 1
-        shell: bash
+        shell: bash -o pipefail -i {0}
         run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Config 2
         if: always()
-        shell: bash
+        shell: bash -o pipefail -i {0}
         run: |
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Build
-        shell: bash
+        shell: bash -o pipefail -i {0}
         run: cmake --build . --config Release
       - name: Install
-        shell: bash
+        shell: bash -o pipefail -i {0}
         run: cmake --install .
   stop-runner:
     name: Stop self-hosted EC2 runner
