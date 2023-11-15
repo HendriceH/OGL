@@ -62,14 +62,7 @@ jobs:
           module load OpenFOAM
           module load cmake
           env
-      - name: Config 1
-        shell: bash -o pipefail -i {0}
-        run: |
-          module load openmpi
-          module load OpenFOAM
-          module load cmake
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
-      - name: Config 2
+      - name: Config
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
@@ -78,6 +71,7 @@ jobs:
           module load cmake
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Build
+        if: always()
         shell: bash -o pipefail -i {0}
         run: |
           module load openmpi
@@ -85,6 +79,7 @@ jobs:
           module load cmake
           cmake --build . --config Release
       - name: Install
+        if: always()
         shell: bash -o pipefail -i {0}
         run: |
           module load openmpi
