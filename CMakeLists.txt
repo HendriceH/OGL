@@ -37,7 +37,7 @@ if(NOT OGL_ALLOW_REFERENCE_ONLY)
 endif()
 
 set(GINKGO_CHECKOUT_VERSION
-    "4292ffdee"
+    "sparse-communicator"
     CACHE STRING "Use specific version of ginkgo")
 
 include(CheckIncludeFileCXX)
@@ -151,6 +151,7 @@ target_sources(
           BaseWrapper/lduBase/GKOlduBase.C
           BaseWrapper/CoupledLduBase/GKOCoupledLduBase.C
           HostMatrix/HostMatrix.C
+          HostMatrix/HostMatrixFreeFunctions.C
           Solver/CG/GKOCG.C
           Solver/BiCGStab/GKOBiCGStab.C
 #Solver / IR / GKOIR.C Solver / Multigrid / GKOMultigrid.C
