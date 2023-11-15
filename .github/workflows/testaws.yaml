@@ -21,7 +21,7 @@ jobs:
           aws-region: us-east-1
       - name: Start EC2 runner
         id: start-ec2-runner
-        uses: HendriceH/ec2-github-runner@v1.7
+        uses: HendriceH/ec2-github-runner@v1.8
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
@@ -69,9 +69,6 @@ jobs:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
-    defaults:
-      run:
-        working-directory: /share/software/
     steps:
       - name: Checkout OGL
         uses: actions/checkout@v2
@@ -106,7 +103,7 @@ jobs:
           role-to-assume: arn:aws:iam::308634587211:role/Github-OIDC-Role-29bocUD8VBZr
           aws-region: us-east-1
       - name: Stop EC2 runner
-        uses: HendriceH/ec2-github-runner@v1.7
+        uses: HendriceH/ec2-github-runner@v1.8
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
