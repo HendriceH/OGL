@@ -45,26 +45,7 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
-                 export COMPILER_TYPE="gnu10"
-                 export CC="gcc10-gcc"
-                 export CXX="gcc10-c++"
-                 export PATH="/opt/nvidia/cuda/bin:/share/software/cmake/3.22.6/bin:/lib64/openmpi/bin:$PATH"
                  ln -s /share/software/cmake/3.22.6/share/cmake-3.22 /usr/share/cmake-3.22
-                 export CPATH="/lib64/openmpi/include:$CPATH"
-                 export MPI_DIR="/lib64/openmpi"
-                 export MPI_ROOT="/lib64/openmpi"
-                 export OPENMPI="/lib64/openmpi"
-                 export MPI_CC="mpicc"
-                 export MPI_CXX="mpicxx"
-                 export LD_LIBRARY_PATH="/lib64/openmpi/lib:$LD_LIBRARY_PATH"
-                 export PKG_CONFIG_PATH="/lib64/openmpi/lib/pkgconfig:$PKG_CONFIG_PATH"
-                 export LIBRARY_PATH="/lib64/openmpi/lib:$LIBRARY_PATH"
-                 export MPI_LIBDIR="/lib64/openmpi/lib"
-                 export MPI_INCDIR="/lib64/openmpi/include"
-                 export MPI_INCLUDE="-I/usr/include/openmpi-x86_64 -pthread"
-                 source /share/software/OpenFOAM/OpenFOAM-v2212/etc/bashrc
-                 env > ~/testenv
-                 env >> /actions-runner/.env 
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
