@@ -64,18 +64,33 @@ jobs:
           env
       - name: Config 1
         shell: bash -o pipefail -i {0}
-        run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+        run: |
+          module load openmpi
+          module load OpenFOAM
+          module load cmake
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Config 2
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
+          module load openmpi
+          module load OpenFOAM
+          module load cmake
           cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Build
         shell: bash -o pipefail -i {0}
-        run: cmake --build . --config Release
+        run: |
+          module load openmpi
+          module load OpenFOAM
+          module load cmake
+          cmake --build . --config Release
       - name: Install
         shell: bash -o pipefail -i {0}
-        run: cmake --install .
+        run: |
+          module load openmpi
+          module load OpenFOAM
+          module load cmake
+          cmake --install .
   stop-runner:
     name: Stop self-hosted EC2 runner
     needs:
