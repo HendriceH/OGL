@@ -56,7 +56,7 @@ if(NOT ${OGL_USE_EXTERNAL_GINKGO})
   find_package(
     Ginkgo
     CONFIG
-    1.5.0
+    1.7.0
     REQUIRED
     PATHS
     $ENV{FOAM_USER_LIBBIN}/lib/cmake/Ginkgo
