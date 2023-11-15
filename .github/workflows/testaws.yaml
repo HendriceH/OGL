@@ -71,6 +71,8 @@ jobs:
     steps:
       - name: Checkout OGL
         uses: actions/checkout@v2
+        with:
+          ref: Testrefact
       - name: Config 1
         shell: bash
         run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
