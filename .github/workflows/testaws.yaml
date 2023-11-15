@@ -58,7 +58,6 @@ jobs:
       - name: Test env
         shell: bash -o pipefail -i {0}
         run: |
-          env
           module load openmpi
           module load OpenFOAM
           module load cmake
