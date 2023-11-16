@@ -191,6 +191,9 @@ target_include_directories(
           ${CMAKE_CURRENT_SOURCE_DIR}
           )
 
+find_package (Threads REQUIRED)
+target_link_libraries(OGL  PUBLIC Threads::Threads)
+
 target_link_libraries(OGL PUBLIC Ginkgo::ginkgo)
 
 if(${GINKGO_WITH_OGL_EXTENSIONS})
