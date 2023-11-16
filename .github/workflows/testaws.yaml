@@ -33,7 +33,7 @@ jobs:
           pre-runner-script: |
                  #!/bin/bash
                  sudo yum update -y && \ 
-                 sudo yum install docker git libicu ninja-build -y
+                 sudo yum install docker git libicu ninja-build libasan10 -y
                  sudo amazon-linux-extras install epel -y 
                  sudo yum install Lmod -y
                  sudo systemctl enable docker
@@ -45,7 +45,6 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  ln -s /share/software/cmake/3.22.6/share/cmake-3.22 /usr/share/cmake-3.22
-                 ln -s /usr/lib64/libasan.so.4.0.0 /usr/lib64/libasan.so.6
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
@@ -58,6 +57,7 @@ jobs:
       - name: Test env
         shell: bash -o pipefail -i {0}
         run: |
+          module load gnu/10
           module load openmpi
           module load OpenFOAM
           module load cmake
@@ -66,6 +66,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
+          module load gnu/10
           module load openmpi
           module load OpenFOAM
           module load cmake
@@ -74,6 +75,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
+          module load gnu/10
           module load openmpi
           module load OpenFOAM
           module load cmake
@@ -82,6 +84,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
+          module load gnu/10
           module load openmpi
           module load OpenFOAM
           module load cmake
@@ -90,6 +93,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
+          module load gnu/10
           module load openmpi
           module load OpenFOAM
           module load cmake
