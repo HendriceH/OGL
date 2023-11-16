@@ -34,6 +34,8 @@ jobs:
                  #!/bin/bash
                  sudo yum update -y && \ 
                  sudo yum install docker git libicu ninja-build -y
+                 sudo amazon-linux-extras install epel -y 
+                 sudo yum install Lmod -y
                  sudo systemctl enable docker
                  sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
                  sudo mkfs -t xfs /dev/sda1
