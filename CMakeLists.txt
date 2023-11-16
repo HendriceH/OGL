@@ -63,6 +63,7 @@ if(NOT ${OGL_USE_EXTERNAL_GINKGO})
     ${CMAKE_CURRENT_BINARY_DIR}/third_party/ginkgo/build/install/lib/cmake)
 endif()
 
+find_package(CUDAToolkit REQUIRED)
 find_package(NVTX REQUIRED)
 
 # C++ 14 standard or later is required to interface with ginkgo 
@@ -192,13 +193,14 @@ target_include_directories(
           )
 
 target_link_libraries(OGL PUBLIC Ginkgo::ginkgo)
+target_link_libraries(OGL PUBLIC nvtx::nvtx)
 
 if(${GINKGO_WITH_OGL_EXTENSIONS})
   target_compile_definitions(OGL PRIVATE GINKGO_WITH_OGL_EXTENSIONS=1)
 endif()
 if(${GINKGO_BUILD_CUDA})
   target_compile_definitions(OGL PRIVATE GINKGO_BUILD_CUDA=1)
-  target_link_libraries(OGL PUBLIC nvToolsExt)
+  target_link_libraries(OGL PUBLIC CUDA::nvToolsExt)
 endif()
 
 if(OGL_DATA_VALIDATION)
