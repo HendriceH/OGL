@@ -64,7 +64,6 @@ if(NOT ${OGL_USE_EXTERNAL_GINKGO})
 endif()
 
 find_package(CUDAToolkit REQUIRED)
-find_package(NVTX REQUIRED)
 
 # C++ 14 standard or later is required to interface with ginkgo 
 set(CMAKE_CXX_STANDARD 17)
@@ -193,7 +192,6 @@ target_include_directories(
           )
 
 target_link_libraries(OGL PUBLIC Ginkgo::ginkgo)
-target_link_libraries(OGL PUBLIC nvtx::nvtx)
 
 if(${GINKGO_WITH_OGL_EXTENSIONS})
   target_compile_definitions(OGL PRIVATE GINKGO_WITH_OGL_EXTENSIONS=1)
