@@ -33,18 +33,15 @@ jobs:
           pre-runner-script: |
                  #!/bin/bash
                  sudo yum update -y && \ 
-                 sudo yum install docker git libicu ninja-build openmpi-devel -y
-                 sudo amazon-linux-extras install epel -y 
-                 sudo yum install Lmod -y
+                 sudo yum install docker git libicu ninja-build -y
                  sudo systemctl enable docker
-                 sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+                 #sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
                  sudo mkfs -t xfs /dev/sda1
                  sudo mkdir -p /share
                  sudo mount /dev/sda1 /share
                  aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/postinstall_github .
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
-                 aws s3 cp s3://ucfd-share/pcluster/3.x/alinux2/x86_64/4.0.1.lua /share/lmod/modulefiles/Generic/openmpi/
                  ln -s /share/software/cmake/3.22.6/share/cmake-3.22 /usr/share/cmake-3.22
                  ln -s /usr/lib64/libasan.so.4.0.0 /usr/lib64/libasan.so.6
   do-the-job:
