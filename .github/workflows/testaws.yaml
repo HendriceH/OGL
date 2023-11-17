@@ -45,7 +45,9 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  ln -s /share/software/cmake/3.22.6/share/cmake-3.22 /usr/share/cmake-3.22
+                 mkdir -p /share/root
                  export USER=root
+                 export HOME=/share/root
                  export Ginkgo_DIR=/share/software/actions-runner/_work/OGL/OGL/third_party/ginkgo/build/OpenFOAM/root-v2212/platforms/linux64Gcc10DPInt32Opt/lib/cmake/Ginkgo
   do-the-job:
     name: Do the job on the runner
