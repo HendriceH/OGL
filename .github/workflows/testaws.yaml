@@ -21,7 +21,7 @@ jobs:
           aws-region: us-east-1
       - name: Start EC2 runner
         id: start-ec2-runner
-        uses: HendriceH/ec2-github-runner@v1.8
+        uses: HendriceH/ec2-github-runner@v1.9
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
@@ -121,7 +121,7 @@ jobs:
           role-to-assume: arn:aws:iam::308634587211:role/Github-OIDC-Role-29bocUD8VBZr
           aws-region: us-east-1
       - name: Stop EC2 runner
-        uses: HendriceH/ec2-github-runner@v1.8
+        uses: HendriceH/ec2-github-runner@v1.9
         with:
           mode: stop
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
