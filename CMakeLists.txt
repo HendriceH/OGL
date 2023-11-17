@@ -48,7 +48,7 @@ include(cmake/package_helpers.cmake)
 include(cmake/build_helpers.cmake)
 include(cmake/install_helpers.cmake)
 
-ginkgo_find_package(Ginkgo "Ginkgo::ginkgo" FALSE 1.4.0)
+ginkgo_find_package(Ginkgo "Ginkgo::ginkgo" FALSE 1.7.0)
 
 add_subdirectory(third_party)
 
@@ -57,12 +57,14 @@ if(NOT ${OGL_USE_EXTERNAL_GINKGO})
   find_package(
     Ginkgo
     CONFIG
-    1.5.0
+    1.7.0
     REQUIRED
     PATHS
     $ENV{FOAM_USER_LIBBIN}/lib/cmake/Ginkgo
     ${CMAKE_CURRENT_BINARY_DIR}/third_party/ginkgo/build/install/lib/cmake)
 endif()
+
+find_package(CUDAToolkit REQUIRED)
 
 # C++ 14 standard or later is required to interface with ginkgo 
 set(CMAKE_CXX_STANDARD 17)
@@ -198,7 +200,7 @@ if(${GINKGO_WITH_OGL_EXTENSIONS})
 endif()
 if(${GINKGO_BUILD_CUDA})
   target_compile_definitions(OGL PRIVATE GINKGO_BUILD_CUDA=1)
-  target_link_libraries(OGL PUBLIC nvToolsExt)
+  target_link_libraries(OGL PUBLIC CUDA::nvToolsExt)
 endif()
 
 if(OGL_DATA_VALIDATION)
