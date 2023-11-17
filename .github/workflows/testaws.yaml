@@ -60,6 +60,7 @@ jobs:
         shell: bash -o pipefail -i {0}
         run: |
           module load gnu/10
+          module load libfabric-aws
           module load openmpi
           module load OpenFOAM
           module load cmake
@@ -69,24 +70,27 @@ jobs:
         shell: bash -o pipefail -i {0}
         run: |
           module load gnu/10
+          module load libfabric-aws
           module load openmpi
           module load OpenFOAM
           module load cmake
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+          cmake --debug-output -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Config 2
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
           module load gnu/10
+          module load libfabric-aws
           module load openmpi
           module load OpenFOAM
           module load cmake
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
+          cmake --debug-output -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
       - name: Build
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
           module load gnu/10
+          module load libfabric-aws
           module load openmpi
           module load OpenFOAM
           module load cmake
