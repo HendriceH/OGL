@@ -66,17 +66,7 @@ jobs:
           module load OpenFOAM
           module load cmake
           env
-      - name: Config 1
-        if: always()
-        shell: bash -o pipefail -i {0}
-        run: |
-          module load gnu/10
-          module load libfabric-aws
-          module load openmpi
-          module load OpenFOAM
-          module load cmake
-          cmake --debug-output -G Ninja -DCMAKE_BUILD_TYPE=Release -DGINKGO_BUILD_CUDA=ON .
-      - name: Config 2
+      - name: Config
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
