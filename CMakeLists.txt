@@ -20,6 +20,7 @@ option(OGL_USE_EXTERNAL_GINKGO "Use external ginkgo" FALSE)
 option(OGL_DATA_VALIDATION "Check if resulting matrix data is valid" FALSE)
 option(OGL_USE_FOAM_FOUNDATION_VERSION
        "Build OGL for the OpenFOAM Foundation version" FALSE)
+option(OGL_BUILD_UNITTEST "Build OGL unittests" FALSE)
 option(GINKGO_BUILD_CUDA "Build Ginkgo with cuda backend" FALSE)
 option(GINKGO_BUILD_HIP "Build Ginkgo with hip backend" FALSE)
 option(GINKGO_BUILD_SYCL "Build Ginkgo with sycl backend" FALSE)
@@ -56,14 +57,12 @@ if(NOT ${OGL_USE_EXTERNAL_GINKGO})
   find_package(
     Ginkgo
     CONFIG
-    1.7.0
+    1.5.0
     REQUIRED
     PATHS
     $ENV{FOAM_USER_LIBBIN}/lib/cmake/Ginkgo
     ${CMAKE_CURRENT_BINARY_DIR}/third_party/ginkgo/build/install/lib/cmake)
 endif()
-
-find_package(CUDAToolkit REQUIRED)
 
 # C++ 14 standard or later is required to interface with ginkgo 
 set(CMAKE_CXX_STANDARD 17)
@@ -93,6 +92,7 @@ if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     "
 #- Rpass-analysis=loop-vectorize  -Rpass-missed=loop-vectorize
 )
+
 
 elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
   add_definitions(-DWITH_GNU)
@@ -184,24 +184,21 @@ target_sources(
 
 target_include_directories(
   OGL SYSTEM
-  PRIVATE $ENV{FOAM_SRC}/finiteVolume/lnInclude
+  PUBLIC $ENV{FOAM_SRC}/finiteVolume/lnInclude
           $ENV{FOAM_SRC}/meshTools/lnInclude
           $ENV{FOAM_SRC}/OpenFOAM/lnInclude
           $ENV{FOAM_SRC}/OSspecific/POSIX/lnInclude
           ${CMAKE_CURRENT_SOURCE_DIR}
           )
 
-find_package (Threads REQUIRED)
-target_link_libraries(OGL  PUBLIC Threads::Threads)
-
-target_link_libraries(OGL PUBLIC Ginkgo::ginkgo)
+target_link_libraries(OGL PUBLIC Ginkgo::ginkgo stdc++fs)
 
 if(${GINKGO_WITH_OGL_EXTENSIONS})
   target_compile_definitions(OGL PRIVATE GINKGO_WITH_OGL_EXTENSIONS=1)
 endif()
 if(${GINKGO_BUILD_CUDA})
   target_compile_definitions(OGL PRIVATE GINKGO_BUILD_CUDA=1)
-  target_link_libraries(OGL PUBLIC CUDA::nvToolsExt)
+  target_link_libraries(OGL PUBLIC nvToolsExt)
 endif()
 
 if(OGL_DATA_VALIDATION)
@@ -210,6 +207,11 @@ endif()
 
 if(EXISTS $ENV{WM_PROJECT_DIR}/CONTRIBUTORS.md)
   target_compile_definitions(OGL PRIVATE WITH_ESI_VERSION=1)
+endif()
+
+if(${OGL_BUILD_UNITTEST})
+    add_subdirectory(unitTests)
+    enable_testing()
 endif()
 
 install(TARGETS OGL DESTINATION $ENV{FOAM_USER_LIBBIN})
