@@ -1,5 +1,5 @@
-name: Test AWS
-run-name: Test AWS
+name: Compile on AWS
+run-name: Compile on AWS
 on:
   # enable to manually trigger the tests
   workflow_dispatch:
@@ -21,15 +21,21 @@ jobs:
           aws-region: us-east-1
       - name: Start EC2 runner
         id: start-ec2-runner
-        uses: HendriceH/ec2-github-runner@v1.10
+        uses: HendriceH/ec2-github-runner@v1.10  # Starts 60GB Root + 30 GB Share volume
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-03af087024bfdbbee # ami-0e8a34246278c21e4
-          ec2-instance-type: g4dn.4xlarge
+          ec2-image-id: ami-03af087024bfdbbee # Deep learning AMI
+          ec2-instance-type: g4dn.xlarge
           iam-role-name: Role4Github
           subnet-id: subnet-b5d2adbb
           security-group-id: sg-559f8967
+          aws-resource-tags: > # optional, requires additional permissions
+            [
+              {"Key": "ucfd-project", "Value": "BMBF_2022_EXASIM"},
+              {"Key": "ucfd-client", "Value": "UCFD-RD"},
+              {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
+            ]
           pre-runner-script: |
                  #!/bin/bash
                  sudo yum update -y && \ 
@@ -45,8 +51,8 @@ jobs:
                  chmod +x postinstall_github
                  sudo ./postinstall_github > ~/install.log
                  ln -s /share/software/cmake/3.22.6/share/cmake-3.22 /usr/share/cmake-3.22
-                 mkdir -p /share/root
-                 export USER=root
+                 mkdir -p /share/ec2-user
+                 export USER=ec2-user
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
@@ -59,7 +65,7 @@ jobs:
       - name: Test env
         shell: bash -o pipefail -i {0}
         run: |
-          export HOME=/share/root
+          export HOME=/share/ec2-user
           module load gnu/10
           module load libfabric-aws
           module load openmpi
@@ -70,7 +76,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
-          export HOME=/share/root
+          export HOME=/share/ec2-user
           module load gnu/10
           module load libfabric-aws
           module load openmpi
@@ -81,7 +87,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
-          export HOME=/share/root
+          export HOME=/share/ec2-user
           module load gnu/10
           module load libfabric-aws
           module load openmpi
@@ -92,7 +98,7 @@ jobs:
         if: always()
         shell: bash -o pipefail -i {0}
         run: |
-          export HOME=/share/root
+          export HOME=/share/ec2-user
           module load gnu/10
           module load openmpi
           module load OpenFOAM
@@ -107,7 +113,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    if: false #${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
